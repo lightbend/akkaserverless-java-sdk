@@ -246,16 +246,19 @@ lazy val attachProtobufDescriptorSets = Seq(
   Compile / managedResources += protobufDescriptorSetOut.value,
   Compile / unmanagedResourceDirectories ++= (Compile / PB.protoSources).value)
 
-lazy val codegenScala = Project(id = "akkaserverless-codegen-scala", base = file("codegen/scala-gen"))
-  .enablePlugins(BuildInfoPlugin)
-  .enablePlugins(PublishSonatype)
-  .settings(Dependencies.codegenScala)
-  .settings(
-    scalaVersion := Dependencies.ScalaVersionForSbtPlugin,
-    buildInfoKeys := Seq[BuildInfoKey](name, organization, version, scalaVersion, sbtVersion),
-    buildInfoPackage := "com.akkaserverless.codegen.scalasdk",
-    testFrameworks += new TestFramework("munit.Framework"))
-  .dependsOn(codegenCore % "compile->compile;test->test")
+lazy val codegenScala =
+  project
+    .in(file("codegen/scala-gen"))
+    .enablePlugins(BuildInfoPlugin)
+    .enablePlugins(PublishSonatype)
+    .settings(Dependencies.codegenScala)
+    .settings(
+      name := "akkaserverless-codegen-scala",
+      scalaVersion := Dependencies.ScalaVersionForSbtPlugin,
+      buildInfoKeys := Seq[BuildInfoKey](name, organization, version, scalaVersion, sbtVersion),
+      buildInfoPackage := "com.akkaserverless.codegen.scalasdk",
+      testFrameworks += new TestFramework("munit.Framework"))
+    .dependsOn(codegenCore % "compile->compile;test->test")
 
 lazy val sbtPlugin = Project(id = "sbt-akkaserverless", base = file("sbt-plugin"))
   .enablePlugins(SbtPlugin)
