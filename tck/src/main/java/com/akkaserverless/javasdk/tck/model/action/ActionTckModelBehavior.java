@@ -35,8 +35,6 @@ import java.util.concurrent.CompletionStage;
 
 public class ActionTckModelBehavior extends Action {
 
-  private final ActorSystem system = ActorSystem.create("ActionTckModel");
-
   public ActionTckModelBehavior(ActionCreationContext creationContext) {}
 
   public Effect<Response> processUnary(Request request) {
@@ -56,7 +54,7 @@ public class ActionTckModelBehavior extends Action {
                   acc.addAll(request.getGroupsList());
                   return acc;
                 })
-            .runWith(Sink.head(), system);
+            .runWith(Sink.head(), actionContext().materializer());
     CompletionStage<Effect<Response>> effect = processGroups.thenApply(groups -> response(groups));
     return effects().asyncEffect(effect);
   }

@@ -16,11 +16,11 @@
 
 package com.akkaserverless.scalasdk.impl.view
 
-import java.util.Optional
+import akka.stream.Materializer
 
+import java.util.Optional
 import scala.jdk.CollectionConverters.SetHasAsJava
 import scala.jdk.OptionConverters._
-
 import com.akkaserverless.javasdk
 import com.akkaserverless.javasdk.view.ViewOptions
 import com.akkaserverless.scalasdk.Metadata
@@ -33,14 +33,14 @@ import com.akkaserverless.scalasdk.view.ViewCreationContext
 import com.akkaserverless.scalasdk.view.ViewProvider
 import com.google.protobuf.Descriptors
 
-private[scalasdk] class Scala2JavaViewAdapter[S](scalasdkView: View[S]) extends javasdk.view.View[S] {
+private[scalasdk] final class Scala2JavaViewAdapter[S](scalasdkView: View[S]) extends javasdk.view.View[S] {
   override def emptyState(): S = scalasdkView.emptyState
 
   override def _internalSetUpdateContext(context: Optional[javasdk.view.UpdateContext]): Unit =
     scalasdkView._internalSetUpdateContext(context.map(new Java2ScalaUpdateContextAdapter(_)).toScala)
 }
 
-private[scalasdk] class Scala2JavaViewProviderAdapter[S, V <: View[S]](scalasdkProvider: ViewProvider[S, V])
+private[scalasdk] final class Scala2JavaViewProviderAdapter[S, V <: View[S]](scalasdkProvider: ViewProvider[S, V])
     extends javasdk.view.ViewProvider[S, javasdk.view.View[S]] {
   override def serviceDescriptor(): Descriptors.ServiceDescriptor =
     scalasdkProvider.serviceDescriptor
@@ -75,7 +75,7 @@ private[scalasdk] class Scala2JavaViewHandlerAdapter[S](
   }
 }
 
-private[scalasdk] class Java2ScalaViewCreationContextAdapter(javasdkContext: javasdk.view.ViewCreationContext)
+private[scalasdk] final class Java2ScalaViewCreationContextAdapter(javasdkContext: javasdk.view.ViewCreationContext)
     extends ViewCreationContext {
   override def viewId: String =
     javasdkContext.viewId()
@@ -85,9 +85,11 @@ private[scalasdk] class Java2ScalaViewCreationContextAdapter(javasdkContext: jav
 
   override def getGrpcClient[T](clientClass: Class[T], service: String): T =
     javasdkContext.getGrpcClient(clientClass, service)
+
+  override def materializer(): Materializer = javasdkContext.materializer()
 }
 
-private[scalasdk] class Java2ScalaUpdateContextAdapter(val javasdkContext: javasdk.view.UpdateContext)
+private[scalasdk] final class Java2ScalaUpdateContextAdapter(val javasdkContext: javasdk.view.UpdateContext)
     extends UpdateContext {
   override def eventSubject: Option[String] =
     javasdkContext.eventSubject().toScala
@@ -107,4 +109,6 @@ private[scalasdk] class Java2ScalaUpdateContextAdapter(val javasdkContext: javas
 
   override def getGrpcClient[T](clientClass: Class[T], service: String): T =
     javasdkContext.getGrpcClient(clientClass, service)
+
+  override def materializer(): Materializer = javasdkContext.materializer()
 }

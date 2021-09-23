@@ -17,11 +17,10 @@
 package com.akkaserverless.scalasdk.impl.action
 
 import java.util.Optional
-
 import scala.jdk.CollectionConverters.SetHasAsJava
 import scala.jdk.OptionConverters.RichOptional
-
 import akka.NotUsed
+import akka.stream.Materializer
 import akka.stream.javadsl.Source
 import com.akkaserverless.javasdk
 import com.akkaserverless.javasdk.impl.action.ActionOptionsImpl
@@ -36,7 +35,7 @@ import com.akkaserverless.scalasdk.impl.MetadataImpl
 import com.akkaserverless.scalasdk.impl.ScalaServiceCallFactoryAdapter
 import com.google.protobuf.Descriptors
 
-private[scalasdk] case class JavaActionAdapter(scalaSdkAction: Action) extends javasdk.action.Action {
+private[scalasdk] final case class JavaActionAdapter(scalaSdkAction: Action) extends javasdk.action.Action {
 
   /** INTERNAL API */
   override def _internalSetActionContext(context: Optional[javasdk.action.ActionContext]): Unit =
@@ -118,7 +117,7 @@ private[scalasdk] case class JavaActionHandlerAdapter[A <: Action](
 
 }
 
-private[scalasdk] case class ScalaMessageEnvelopeAdapter[A](javaSdkMsgEnvelope: javasdk.action.MessageEnvelope[A])
+private[scalasdk] final case class ScalaMessageEnvelopeAdapter[A](javaSdkMsgEnvelope: javasdk.action.MessageEnvelope[A])
     extends MessageEnvelope[A] {
   override def metadata: Metadata = new MetadataImpl(
     // FIXME can we get rid of this cast?
@@ -126,7 +125,7 @@ private[scalasdk] case class ScalaMessageEnvelopeAdapter[A](javaSdkMsgEnvelope: 
   override def payload: A = javaSdkMsgEnvelope.payload()
 }
 
-private[scalasdk] case class ScalaActionCreationContextAdapter(
+private[scalasdk] final case class ScalaActionCreationContextAdapter(
     javaSdkCreationContext: javasdk.action.ActionCreationContext)
     extends ActionCreationContext {
 
@@ -135,9 +134,11 @@ private[scalasdk] case class ScalaActionCreationContextAdapter(
 
   override def getGrpcClient[T](clientClass: Class[T], service: String): T =
     javaSdkCreationContext.getGrpcClient(clientClass, service)
+
+  override def materializer(): Materializer = javaSdkCreationContext.materializer()
 }
 
-private[scalasdk] case class ScalaActionContextAdapter(javaSdkContext: javasdk.action.ActionContext)
+private[scalasdk] final case class ScalaActionContextAdapter(javaSdkContext: javasdk.action.ActionContext)
     extends ActionContext {
   override def metadata: Metadata =
     // FIXME can we get rid of this cast?
@@ -151,4 +152,6 @@ private[scalasdk] case class ScalaActionContextAdapter(javaSdkContext: javasdk.a
 
   override def getGrpcClient[T](clientClass: Class[T], service: String): T =
     javaSdkContext.getGrpcClient(clientClass, service)
+
+  override def materializer(): Materializer = javaSdkContext.materializer()
 }
