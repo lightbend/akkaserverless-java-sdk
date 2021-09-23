@@ -26,8 +26,7 @@ object SourceGenerator {
    * Generate the 'managed' code for this model: code that will be regenerated regularly in the 'compile' configuratio
    */
   def generateManaged(model: ModelBuilder.Model): Seq[File] = {
-    Seq(File("foo/bar/AbstractBaz.scala", "package foo.bar\n\nabstract class AbstractBaz")) ++
-    MainSourceGenerator.generateManaged(model) ++
+    MainSourceGenerator.generateManaged(model).toSeq ++
     model.services.values
       .flatMap {
         case service: ModelBuilder.EntityService =>
@@ -59,8 +58,7 @@ object SourceGenerator {
    * user.
    */
   def generateUnmanaged(model: ModelBuilder.Model): Seq[File] = {
-    Seq(File("foo/bar/Baz.scala", "package foo.bar\n\nclass Baz extends AbstractBaz")) ++
-    MainSourceGenerator.generateUnmanaged(model) ++
+    MainSourceGenerator.generateUnmanaged(model).toSeq ++
     model.services.values
       .flatMap {
         case service: ModelBuilder.EntityService =>
