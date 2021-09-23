@@ -26,7 +26,7 @@ object SourceGenerator {
    * Generate the 'managed' code for this model: code that will be regenerated regularly in the 'compile' configuratio
    */
   def generateManaged(model: ModelBuilder.Model): Seq[File] = {
-    MainSourceGenerator.generateManaged(model) ++
+    MainSourceGenerator.generateManaged(model).toSeq ++
     model.services.values
       .flatMap {
         case service: ModelBuilder.EntityService =>
@@ -58,7 +58,7 @@ object SourceGenerator {
    * user.
    */
   def generateUnmanaged(model: ModelBuilder.Model): Seq[File] = {
-    MainSourceGenerator.generateUnmanaged(model) ++
+    MainSourceGenerator.generateUnmanaged(model).toSeq ++
     model.services.values
       .flatMap {
         case service: ModelBuilder.EntityService =>
