@@ -47,7 +47,7 @@ object MainSourceGenerator {
     }
 
     val filteredEntities = model.entities.filter {
-      case (_, _: ModelBuilder.ValueEntity)        => false
+      case (_, _: ModelBuilder.ValueEntity)        => true
       case (_, _: ModelBuilder.EventSourcedEntity) => false
       case (_, _: ModelBuilder.ReplicatedEntity)   => false
     }
