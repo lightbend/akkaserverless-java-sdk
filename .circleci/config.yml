@@ -73,11 +73,18 @@ commands:
             # the SDK_VERSION is later used to run the maven tests (see below)
             echo 'export SDK_VERSION='`sbt "print sdkJava/version" | tail -n 2 | head -n 1` >> $BASH_ENV
 
+  publish-local-sbt:
+    description: Publish local (sbt)
+    steps:
+      - run:
+          name: publish local (sbt)
+          command: sbt publishLocal
+
   build-maven-java:
     description: Build maven-java
     steps:
       - run:
-          name: publish m2
+          name: publish local
           command: sbt publishM2
       - run:
           name: "Build maven-java"
@@ -86,6 +93,8 @@ commands:
             echo "Running maven-java with SDK version: '$SDK_VERSION'"
             mvn versions:set -DnewVersion=$SDK_VERSION
             mvn verify install
+
+
 jobs:
   checks:
     docker:
@@ -284,6 +293,14 @@ jobs:
             echo "Running mvn with SDK version: '$SDK_VERSION'"
             mvn -Dakkaserverless-sdk.version=$SDK_VERSION test-compile
             mvn -Dakkaserverless-sdk.version=$SDK_VERSION verify -Pit
+      # add sbt sample here      
+      - publish-local-sbt            
+      - run:
+          name: Fibonacci Action
+          command: |
+            cd samples/scala-fibonacci-action
+            echo "Running sbt with SDK version: '$SDK_VERSION'"
+            sbt -Dakkaserverless-sdk.version=$SDK_VERSION test:compile
       - save_deps_cache
 
   publish:
