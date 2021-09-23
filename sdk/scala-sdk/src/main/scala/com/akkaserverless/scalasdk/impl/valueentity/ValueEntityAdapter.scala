@@ -16,14 +16,14 @@
 
 package com.akkaserverless.scalasdk.impl.valueentity
 
-import java.util.Optional
+import akka.stream.Materializer
 
+import java.util.Optional
 import scala.collection.immutable
 import scala.compat.java8.DurationConverters._
 import scala.jdk.CollectionConverters.SetHasAsJava
 import scala.jdk.CollectionConverters.SetHasAsScala
 import scala.jdk.OptionConverters._
-
 import com.akkaserverless.javasdk
 import com.akkaserverless.scalasdk.PassivationStrategy
 import com.akkaserverless.scalasdk.ServiceCallFactory
@@ -36,14 +36,14 @@ import com.akkaserverless.scalasdk.valueentity.ValueEntityOptions
 import com.akkaserverless.scalasdk.valueentity.ValueEntityProvider
 import com.google.protobuf.Descriptors
 
-private[scalasdk] class JavaValueEntityAdapter[S](scalasdkValueEntity: ValueEntity[S])
+private[scalasdk] final class JavaValueEntityAdapter[S](scalasdkValueEntity: ValueEntity[S])
     extends javasdk.valueentity.ValueEntity[S] {
   override def emptyState(): S = scalasdkValueEntity.emptyState
   override def _internalSetCommandContext(context: Optional[javasdk.valueentity.CommandContext]): Unit =
     scalasdkValueEntity._internalSetCommandContext(context.map(new JavaCommandContextAdapter(_)).toScala)
 }
 
-private[scalasdk] class JavaValueEntityProviderAdapter[S, E <: ValueEntity[S]](
+private[scalasdk] final class JavaValueEntityProviderAdapter[S, E <: ValueEntity[S]](
     scalasdkProvider: ValueEntityProvider[S, E])
     extends javasdk.valueentity.ValueEntityProvider[S, javasdk.valueentity.ValueEntity[S]] {
   override def additionalDescriptors(): Array[Descriptors.FileDescriptor] =
@@ -61,7 +61,7 @@ private[scalasdk] class JavaValueEntityProviderAdapter[S, E <: ValueEntity[S]](
   override def serviceDescriptor(): Descriptors.ServiceDescriptor = scalasdkProvider.serviceDescriptor
 }
 
-private[scalasdk] class JavaValueEntityHandlerAdapter[S](
+private[scalasdk] final class JavaValueEntityHandlerAdapter[S](
     javasdkValueEntity: javasdk.valueentity.ValueEntity[S],
     scalasdkHandler: ValueEntityHandler[S, ValueEntity[S]])
     extends javasdk.impl.valueentity.ValueEntityHandler[S, javasdk.valueentity.ValueEntity[S]](javasdkValueEntity) {
@@ -76,7 +76,7 @@ private[scalasdk] class JavaValueEntityHandlerAdapter[S](
     }
   }
 }
-private[scalasdk] class JavaValueEntityOptionsAdapter(scalasdkValueEntityOptions: ValueEntityOptions)
+private[scalasdk] final class JavaValueEntityOptionsAdapter(scalasdkValueEntityOptions: ValueEntityOptions)
     extends javasdk.valueentity.ValueEntityOptions {
 
   def forwardHeaders(): java.util.Set[String] = scalasdkValueEntityOptions.forwardHeaders.asJava
@@ -93,7 +93,7 @@ private[scalasdk] class JavaValueEntityOptionsAdapter(scalasdkValueEntityOptions
     new JavaValueEntityOptionsAdapter(scalasdkValueEntityOptions.withPassivationStrategy(passivationStrategy))
 }
 
-private[scalasdk] class JavaCommandContextAdapter(val javasdkContext: javasdk.valueentity.CommandContext)
+private[scalasdk] final class JavaCommandContextAdapter(val javasdkContext: javasdk.valueentity.CommandContext)
     extends CommandContext {
   override def commandName: String = javasdkContext.commandName()
 
@@ -108,15 +108,19 @@ private[scalasdk] class JavaCommandContextAdapter(val javasdkContext: javasdk.va
   override def metadata: com.akkaserverless.scalasdk.Metadata =
     // FIXME can we get rid of this cast?
     new MetadataImpl(javasdkContext.metadata().asInstanceOf[com.akkaserverless.javasdk.impl.MetadataImpl])
+
+  override def materializer(): Materializer = javasdkContext.materializer()
 }
 
-private[scalasdk] class ScalaValueEntityContextAdapter(javasdkContext: javasdk.valueentity.ValueEntityContext)
+private[scalasdk] final class ScalaValueEntityContextAdapter(javasdkContext: javasdk.valueentity.ValueEntityContext)
     extends ValueEntityContext {
   def entityId: String = javasdkContext.entityId()
   override def getGrpcClient[T](clientClass: Class[T], service: String): T =
     javasdkContext.getGrpcClient(clientClass, service)
   override def serviceCallFactory: ServiceCallFactory =
     ScalaServiceCallFactoryAdapter(javasdkContext.serviceCallFactory())
+
+  override def materializer(): Materializer = javasdkContext.materializer()
 }
 
 private[scalasdk] class JavaPassivationStrategyAdapter(scalasdkPassivationStrategy: PassivationStrategy)

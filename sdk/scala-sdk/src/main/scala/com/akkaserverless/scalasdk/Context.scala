@@ -16,6 +16,8 @@
 
 package com.akkaserverless.scalasdk
 
+import akka.stream.Materializer
+
 trait Context {
 
   /** Get the service call factory for this stateful service. */
@@ -34,4 +36,10 @@ trait Context {
    *   where connection details are configured under `akka.grpc.client.[service-name]` in `application.conf`.
    */
   def getGrpcClient[T](clientClass: Class[T], service: String): T
+
+  /**
+   * An Akka Stream materializer to use for running streams. Needed for example in a command handler which accepts
+   * streaming elements but returns a single async reply once all streamed elements has been consumed.
+   */
+  def materializer(): Materializer
 }

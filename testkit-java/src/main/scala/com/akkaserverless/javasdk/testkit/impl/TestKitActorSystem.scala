@@ -17,16 +17,12 @@
 package com.akkaserverless.javasdk.testkit.impl
 
 import akka.actor.ActorSystem
-import akka.stream.Materializer
-import com.akkaserverless.javasdk.ServiceCallFactory
-import com.akkaserverless.javasdk.eventsourcedentity.EventSourcedEntityContext
 
 /**
- * INTERNAL API Used by the generated testkit
+ * INTERNAL API
  */
-final class TestKitEventSourcedEntityContext(override val entityId: String) extends EventSourcedEntityContext {
-  override def serviceCallFactory: ServiceCallFactory = TestKitServiceCallFactory
-  override def getGrpcClient[T](clientClass: Class[T], service: String): T =
-    throw new UnsupportedOperationException("Testing logic using a gRPC client is not possible with the testkit")
-  override def materializer(): Materializer = Materializer(TestKitActorSystem.system)
+private[akkaserverless] object TestKitActorSystem {
+  // Only used to materialize streams (expected to be short lived) in user logic, same system re-used across tests is fine
+  // FIXME leaks one actor system per test run though, because no callback to terminate, that's not great
+  lazy val system = ActorSystem(s"testkit-actor-system-${System.currentTimeMillis()}")
 }

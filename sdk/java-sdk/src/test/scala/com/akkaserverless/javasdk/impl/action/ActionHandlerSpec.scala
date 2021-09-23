@@ -50,7 +50,7 @@ import scala.concurrent.duration._
 
 class ActionHandlerSpec extends AnyWordSpec with Matchers with BeforeAndAfterAll with Inside with OptionValues {
 
-  private implicit val system = ActorSystem("ActionsSpec")
+  private implicit val system = ActorSystem("ActionHandlerSpec")
 
   import system.dispatcher
 

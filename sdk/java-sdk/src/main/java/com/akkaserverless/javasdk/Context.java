@@ -16,6 +16,8 @@
 
 package com.akkaserverless.javasdk;
 
+import akka.stream.Materializer;
+
 /** Root class of all contexts. */
 public interface Context {
   /** Get the service call factory for this stateful service. */
@@ -33,4 +35,11 @@ public interface Context {
    *     `akka.grpc.client.[service-name]` in `application.conf`.
    */
   <T> T getGrpcClient(Class<T> clientClass, String service);
+
+  /**
+   * An Akka Stream materializer to use for running streams. Needed for example in a command handler
+   * which accepts streaming elements but returns a single async reply once all streamed elements
+   * has been consumed.
+   */
+  Materializer materializer();
 }
