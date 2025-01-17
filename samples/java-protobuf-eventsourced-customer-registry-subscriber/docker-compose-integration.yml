@@ -5,7 +5,7 @@
 version: "3"
 services:
   kalix-runtime:
-    image: gcr.io/kalix-public/kalix-runtime:1.2.5
+    image: gcr.io/kalix-public/kalix-runtime:1.2.6
     container_name: java-protobuf-eventsourced-customer-registry-subscriber
     depends_on:
       - kalix-runtime-customer-registry
@@ -21,7 +21,7 @@ services:
       USER_SERVICE_PORT: "8081"
 
   kalix-runtime-customer-registry:
-    image: gcr.io/kalix-public/kalix-runtime:1.2.5
+    image: gcr.io/kalix-public/kalix-runtime:1.2.6
     container_name: java-protobuf-eventsourced-customer-registry
     ports:
       - "9000:9000"

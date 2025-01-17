@@ -1,7 +1,7 @@
 version: "3"
 services:
   kalix-runtime:
-    image: gcr.io/kalix-public/kalix-runtime:1.2.5
+    image: gcr.io/kalix-public/kalix-runtime:1.2.6
     ports:
       - "9000:9000"
     extra_hosts:
