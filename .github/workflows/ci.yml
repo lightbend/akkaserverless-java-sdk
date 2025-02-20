@@ -380,9 +380,6 @@ jobs:
           cd
           tar -xf dependencies.tar.gz
 
-      - name: "Java SDK with Spring - Integration Test"
-        run: sbt javaSdkSpring/IntegrationTest/test
-
   codegen-samples:
     name: Codegen Examples
     needs: [checks, publish-local]
@@ -537,53 +534,29 @@ jobs:
           - { sample: java-protobuf-customer-registry-kafka-quickstart, pre_cmd: 'docker compose -f ../../.github/kafka.yml up -d', it: true }
           - { sample: java-protobuf-customer-registry-views-quickstart, it: true }
 
-          - { sample: java-spring-shopping-cart-quickstart, it: true }
-          - { sample: java-spring-customer-registry-quickstart, it: true }
-          - { sample: java-spring-customer-registry-views-quickstart, it: true }
-          - { sample: java-spring-choreography-saga-quickstart, it: true }
-
           - { sample: java-protobuf-fibonacci-action, it: false }
           - { sample: java-protobuf-doc-snippets, it: false }
           - { sample: java-protobuf-first-service, it: false }
           - { sample: java-protobuf-valueentity-customer-registry, it: false }
           - { sample: java-protobuf-view-store, it: true }
 
-          - { sample: java-spring-fibonacci-action, it: true }
-          - { sample: java-spring-doc-snippets, it: false }
-          - { sample: java-spring-view-store, it: true }
-
           - { sample: java-protobuf-eventsourced-customer-registry, it: true }
           - { sample: java-protobuf-eventsourced-customer-registry-subscriber, it: true, pre_cmd: 'mvn -f ../java-protobuf-eventsourced-customer-registry/pom.xml package docker:build --no-transfer-progress' }
           - { sample: java-protobuf-eventsourced-counter, it: true }
           - { sample: java-protobuf-eventsourced-shopping-cart, it: true }
 
-          - { sample: java-spring-eventsourced-customer-registry, it: true }
-          - { sample: java-spring-eventsourced-customer-registry-subscriber, it: true, pre_cmd: 'mvn -f ../java-spring-eventsourced-customer-registry/pom.xml package docker:build --no-transfer-progress' }
-          - { sample: java-spring-eventsourced-counter, pre_cmd: 'docker compose up gcloud-pubsub-emulator -d', it: true }
-          - { sample: java-spring-eventsourced-shopping-cart, it: true }
-
           - { sample: java-protobuf-valueentity-counter, it: true }
           - { sample: java-protobuf-valueentity-counter-spring-client, verify: true, it: false }
           - { sample: java-protobuf-valueentity-shopping-cart, it: true }
-
-          - { sample: java-spring-valueentity-counter, it: true }
-          - { sample: java-spring-valueentity-shopping-cart, it: true }
-          - { sample: java-spring-valueentity-customer-registry, it: true }
-
 
           - { sample: java-protobuf-replicatedentity-shopping-cart, it: true }
           - { sample: java-protobuf-replicatedentity-examples, it: true }
 
           - { sample: java-protobuf-tracing, it: false }
-          - { sample: java-spring-tracing, it: false }
 
           - { sample: java-protobuf-web-resources, it: false }
 
           - { sample: java-protobuf-reliable-timers, it: false }
-          - { sample: java-spring-reliable-timers, it: true }
-
-          - { sample: java-spring-transfer-workflow, it: true }
-          - { sample: java-spring-transfer-workflow-compensation, it: true }
 
           - { sample: java-protobuf-transfer-workflow, it: true }
           - { sample: java-protobuf-transfer-workflow-compensation, it: true }

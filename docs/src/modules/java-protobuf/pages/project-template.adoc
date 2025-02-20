@@ -1,6 +1,4 @@
 = Using the project template
-:page-aliases: java:kickstart.adoc
-:page-aliases: java:quickstart-java-maven.adoc
 :page-supergroup-java-scala: Language
 
 include::ROOT:partial$include.adoc[]

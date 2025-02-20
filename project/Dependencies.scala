@@ -33,9 +33,6 @@ object Dependencies {
   val JUnitVersion = "4.13.2"
   val JUnitInterfaceVersion = "0.11"
   val JUnitJupiterVersion = "5.10.1"
-  val SpringFrameworkVersion = "6.1.13"
-  // make sure to sync spring-boot-starter-parent version in samples and archetype to this version
-  val SpringBootVersion = "3.3.4"
   val OpenTelemetryVersion = "1.39.0"
   val OpenTelemetrySemConv = "1.25.0-alpha"
 
@@ -140,35 +137,6 @@ object Dependencies {
     scalapbCompilerPlugin,
     akkaDependency("akka-testkit"),
     akkaDependency("akka-actor-testkit-typed") % Test)
-
-  val springDeps = Seq(
-    jacksonDataFormatProto,
-    "org.springframework" % "spring-web" % SpringFrameworkVersion,
-    "org.springframework" % "spring-webflux" % SpringFrameworkVersion,
-    "org.springframework" % "spring-webmvc" % SpringFrameworkVersion,
-    "org.springframework.boot" % "spring-boot" % SpringBootVersion,
-    "org.springframework.boot" % "spring-boot-starter" % SpringBootVersion,
-    "org.springframework.boot" % "spring-boot-starter-json" % SpringBootVersion,
-    "org.springframework.boot" % "spring-boot-starter-reactor-netty" % SpringBootVersion,
-    "jakarta.websocket" % "jakarta.websocket-api" % "2.0.0")
-
-  val javaSdkSpring = deps ++= sdkDeps ++ springDeps ++ Seq(
-    "net.aichler" % "jupiter-interface" % JupiterKeys.jupiterVersion.value % IntegrationTest,
-    "net.aichler" % "jupiter-interface" % JupiterKeys.jupiterVersion.value % Test,
-    "org.springframework.boot" % "spring-boot-starter-test" % SpringBootVersion % IntegrationTest,
-    "org.scala-lang.modules" %% "scala-parser-combinators" % "2.3.0",
-    junit5 % IntegrationTest,
-    junit5 % Test,
-    "org.assertj" % "assertj-core" % "3.24.2" % IntegrationTest,
-    "org.assertj" % "assertj-core" % "3.24.2" % Test,
-    "org.awaitility" % "awaitility" % "4.2.0" % IntegrationTest)
-
-  val javaSdkSpringTestKit =
-    deps ++= springDeps ++
-    Seq(
-      junit5 % Test,
-      "net.aichler" % "jupiter-interface" % JupiterKeys.jupiterVersion.value % Test,
-      "org.springframework.boot" % "spring-boot-starter-test" % SpringBootVersion)
 
   // FIXME
   val scalaSdk = deps ++= sdkDeps ++ Seq(jacksonScala)

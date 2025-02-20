@@ -11,8 +11,6 @@ Workflows make it possible to implement long-running, multi-step business proces
 
 include::java-protobuf:partial$effects-workflow.adoc[]
 
-See also xref:java:development-process.adoc#_effects_api[Understanding what an Effect is].
-
 == Defining the proto files
 
 We want to build a simple workflow that transfers funds between two wallets. Before that, we will create a wallet subdomain with some basic functionalities that we could use later. For simplicity a `WalletEntity` is implemented as a xref:value-entity.adoc[ValueEntity], but for a production-ready solution an xref:event-sourced-entities.adoc[EventSourcedEntity] would be a better choice.

@@ -1,9 +1,0 @@
-
-You can https://docs.kalix.io/operations/invoke-service.html#_exposing_services_to_the_internet[expose the service to the internet]. A generated hostname will be returned from the expose command:
-
-[source,command line]
-----
-kalix service expose <service name>
-----
-
-
