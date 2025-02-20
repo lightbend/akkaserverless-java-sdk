@@ -546,6 +546,7 @@ jobs:
           - { sample: java-protobuf-eventsourced-shopping-cart, it: true }
 
           - { sample: java-protobuf-valueentity-counter, it: true }
+          - { sample: java-protobuf-valueentity-counter-spring-client, verify: true, it: false }
           - { sample: java-protobuf-valueentity-shopping-cart, it: true }
 
           - { sample: java-protobuf-replicatedentity-shopping-cart, it: true }
