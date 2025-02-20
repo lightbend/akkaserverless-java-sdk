@@ -15,10 +15,6 @@ java_managed_attachments := ${src_managed}/modules/java/attachments
 java_managed_examples := ${src_managed}/modules/java/examples
 java_managed_partials := ${src_managed}/modules/java/partials
 
-#to remove, kept for now so users can still do version checks
-spring_managed_attachments := ${src_managed}/modules/spring/attachments
-#kalix runtime uses sdk-flavor to check latest version although java-spring docs will be at /java/
-java_spring_managed_attachments := ${src_managed}/modules/java-spring/attachments
 
 antora_docker_image := gcr.io/kalix-public/kalix-docbuilder
 antora_docker_image_tag := 0.0.5
@@ -70,35 +66,24 @@ attributes:
 apidocs:
 	mkdir -p "${java_pb_managed_attachments}"
 	mkdir -p "${java_managed_attachments}"
-	cd .. && sbt javaSdkProtobuf/doc javaSdkProtobufTestKit/doc scalaSdkProtobuf/doc scalaSdkProtobufTestKit/doc javaSdkSpring/doc javaSdkSpringTestKit/doc
+	cd .. && sbt javaSdkProtobuf/doc javaSdkProtobufTestKit/doc scalaSdkProtobuf/doc scalaSdkProtobufTestKit/doc
 	rsync -a ../sdk/java-sdk-protobuf/target/api/ "${java_pb_managed_attachments}/api/"
 	rsync -a ../sdk/java-sdk-protobuf-testkit/target/api/ "${java_pb_managed_attachments}/testkit/"
 	rsync -a ../sdk/scala-sdk-protobuf/target/scala-2.13/api/ "${java_pb_managed_attachments}/scala-api/"
 	rsync -a ../sdk/scala-sdk-protobuf-testkit/target/scala-2.13/api/ "${java_pb_managed_attachments}/scala-testkit-api/"
 	rsync -a ../sdk/java-sdk-protobuf/target/api/ "${java_managed_attachments}/api/"
 	rsync -a ../sdk/java-sdk-protobuf-testkit/target/api/ "${java_managed_attachments}/testkit/"
-	rsync -a ../sdk/java-sdk-spring/target/api/ "${java_managed_attachments}/api/"
-	rsync -a ../sdk/java-sdk-spring-testkit/target/api/ "${java_managed_attachments}/testkit/"
 	mkdir -p "${scala_pb_managed_attachments}"
-	mkdir -p "${spring_managed_attachments}"
-	mkdir -p "${java_spring_managed_attachments}"
 	bin/version.sh > "${java_pb_managed_attachments}/latest-version.txt" \
 		&& cp "${java_pb_managed_attachments}/latest-version.txt" "${scala_pb_managed_attachments}" \
-		&& cp "${java_pb_managed_attachments}/latest-version.txt" "${java_managed_attachments}" \
-        && cp "${java_pb_managed_attachments}/latest-version.txt" "${spring_managed_attachments}" \
-        && cp "${java_pb_managed_attachments}/latest-version.txt" "${java_spring_managed_attachments}"
+		&& cp "${java_pb_managed_attachments}/latest-version.txt" "${java_managed_attachments}"
 
 examples:
 	mkdir -p "${java_pb_managed_examples}"
 	rsync -a --exclude-from=.examplesignore ../samples/java-protobuf-* "${java_pb_managed_examples}/"
 	rsync -a --exclude-from=.examplesignore ../samples/scala-protobuf-* "${java_pb_managed_examples}/"
-	rsync -a --exclude-from=.examplesignore ../samples/java-spring-* "${java_managed_examples}/"
 
 bundles:
-	bin/bundle.sh --zip "${java_managed_attachments}/java-spring-customer-registry-quickstart.zip" ../samples/java-spring-customer-registry-quickstart
-	bin/bundle.sh --zip "${java_managed_attachments}/java-spring-customer-registry-views-quickstart.zip" ../samples/java-spring-customer-registry-views-quickstart
-	bin/bundle.sh --zip "${java_managed_attachments}/java-spring-shopping-cart-quickstart.zip" ../samples/java-spring-shopping-cart-quickstart
-	bin/bundle.sh --zip "${java_managed_attachments}/java-spring-choreography-saga-quickstart.zip" ../samples/java-spring-choreography-saga-quickstart
 	bin/bundle.sh --zip "${java_pb_managed_attachments}/java-protobuf-customer-registry-quickstart.zip" ../samples/java-protobuf-customer-registry-quickstart
 	bin/bundle.sh --zip "${java_pb_managed_attachments}/java-protobuf-customer-registry-views-quickstart.zip" ../samples/java-protobuf-customer-registry-views-quickstart
 	bin/bundle.sh --zip "${java_pb_managed_attachments}/java-protobuf-customer-registry-kafka-quickstart.zip" ../samples/java-protobuf-customer-registry-kafka-quickstart

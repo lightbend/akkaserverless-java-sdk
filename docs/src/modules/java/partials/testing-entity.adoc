@@ -1,6 +1,0 @@
-There are two ways to test an Entity:
-
-* Unit tests, which run the Entity class in the same JVM as the test code itself with the help of a test kit.
-* Integration tests, with the service deployed in a docker container running the entire service and the test interacting with it over HTTP requests.
-
-Each way has its benefits, unit tests are faster and provide more immediate feedback about success or failure but can only test a single entity at a time and in isolation. Integration tests, on the other hand, are more realistic and allow many entities to interact with other components inside and outside the service.

@@ -1,4 +1,0 @@
-[NOTE]
-====
-In the `Topic` annotation, only topic names are referenced and no additional details about how to connect to the topics are needed. When deploying the application there must be a broker configuration in the Kalix project, with credentials and details on how connect to the broker. For details about configuring a broker see https://docs.kalix.io/operations/message-brokers.html[Configure message brokers]
-====

@@ -39,12 +39,6 @@ jobs:
           echo ### List targets ###
           fossa list-targets
 
-          echo ### Java SDK (code-first) ###
-          fossa analyze -p kalix-java-sdk-spring \
-            --only-target scala@sdk/java-sdk-spring/target/ \
-            --only-target scala@sdk/java-sdk-spring-testkit/target/ \
-            --only-target scala@sdk/spring-boot-starter/target/
-
           echo ### Java SDK (protobuf) including Maven codegen ###
           fossa analyze -p kalix-java-sdk-protobuf \
             --only-target scala@sdk/java-sdk-protobuf/target/ \

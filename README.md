@@ -8,17 +8,6 @@ The Kalix JVM SDKs are used to develop Kalix services using Java or Scala. Two d
 
 If you’re just looking to get started, we advise you to start with the Java SDK which is the only one supporting a code-first development approach at present. For more information see the documentation for [implementing Kalix services in Java](https://docs.kalix.io/java/index.html).
 
-
-## Java SDK
-
-* User-facing packages
-  * `kalix-spring-boot-starter`: The Java API to build services in Kalix with a code-first development approach using a Spring Boot Starter. See [Java SDK](https://docs.kalix.io/java/index.html).
-  * `kalix-spring-boot-starter-test`: A library to implement integration tests for services, based on [TestContainers](https://www.testcontainers.org/). Also contains library parts of unit TestKit.
-* [Samples](samples/): Small example services to illustrate Kalix features for this SDK are prefixed with `java-spring-`. The code also provides snippets for the documentation.
-* Developer tooling
-  * `maven-java` Maven tooling
-    * `kalix-spring-boot-archetype` Maven archetype to create a project.
-
 ## Java/Scala Protobuf SDK
 
 * User-facing packages
