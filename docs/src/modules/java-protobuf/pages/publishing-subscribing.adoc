@@ -570,7 +570,7 @@ include::example$scala-protobuf-eventsourced-counter/src/test/scala/com/example/
 
 TIP: In the example above we take advantage of the TestKit to serialize / deserialize the messages and pass all the required metadata automatically for us. However, the API also offers the possibility to read and write raw bytes, construct your metadata or read multiple messages at once.
 
-==== Metadata
+=== Metadata
 
 Typically, messages are published with associated metadata. If you want to construct your own `Metadata` to be consumed by a service or make sure the messages published out of your service have specific metadata attached, you can do so using the TestKit, as shown below.
 
@@ -604,7 +604,7 @@ include::example$scala-protobuf-eventsourced-counter/src/test/scala/com/example/
 <6> Assert the headers `Content-Type` and `ce-subject` (every CloudEvent header is prefixed with "ce-") have the expected values.
 
 
-==== One Suite, Multiple Tests
+=== One Suite, Multiple Tests
 
 When running multiple test cases under the same test suite and thus using a common TestKit instance, you might face some issues if unconsumed messages from previous tests mess up with the current one. To avoid this, be sure to:
 
