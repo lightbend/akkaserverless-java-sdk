@@ -3,7 +3,7 @@ services:
   # note the ports being different from other sample docker-compose files to allow this service to run
   # on the same local machine as the scala-protobuf-eventsourced-customer-registry
   kalix-runtime:
-    image: gcr.io/kalix-public/kalix-runtime:1.2.7
+    image: gcr.io/kalix-public/kalix-runtime:1.2.9
     container_name: scala-protobuf-eventsourced-customer-registry-subscriber
     ports:
       - "${ADVERTISED_HTTP_PORT}:9000"

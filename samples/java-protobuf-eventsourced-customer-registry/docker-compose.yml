@@ -2,7 +2,7 @@
 version: "3"
 services:
   kalix-runtime:
-    image: gcr.io/kalix-public/kalix-runtime:1.2.7
+    image: gcr.io/kalix-public/kalix-runtime:1.2.9
     container_name: java-protobuf-eventsourced-customer-registry
     ports:
       - "${ADVERTISED_HTTP_PORT}:9000"

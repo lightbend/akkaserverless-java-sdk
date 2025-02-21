@@ -5,7 +5,7 @@
 version: "3"
 services:
   kalix-runtime:
-    image: gcr.io/kalix-public/kalix-runtime:1.2.7
+    image: gcr.io/kalix-public/kalix-runtime:1.2.9
     container_name: scala-protobuf-eventsourced-customer-registry-subscriber
     depends_on:
       - kalix-runtime-customer-registry
@@ -21,7 +21,7 @@ services:
       USER_SERVICE_PORT: "8081"
 
   kalix-runtime-customer-registry:
-    image: gcr.io/kalix-public/kalix-runtime:1.2.7
+    image: gcr.io/kalix-public/kalix-runtime:1.2.9
     container_name: scala-protobuf-eventsourced-customer-registry
     ports:
       - "9000:9000"
@@ -29,7 +29,8 @@ services:
       - "host.docker.internal:host-gateway"
     environment:
       JAVA_TOOL_OPTIONS: >
-      # jvm -D properties can be added under this environment map (note: remove this comment when adding properties)
+        -Dakka.persistence.r2dbc.h2.validation-query = "SELECT 1"
+
 
       USER_SERVICE_HOST: host.docker.internal
       USER_SERVICE_PORT: "8080"

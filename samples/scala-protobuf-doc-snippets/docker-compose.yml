@@ -2,7 +2,7 @@
 version: "3"
 services:
   kalix-runtime:
-    image: gcr.io/kalix-public/kalix-runtime:1.2.7
+    image: gcr.io/kalix-public/kalix-runtime:1.2.9
     # uncomment volumes when persistence is enabled
     volumes: # <1>
       - ./target/kalix:/var/kalix
